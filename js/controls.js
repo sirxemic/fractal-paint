@@ -24,7 +24,9 @@ function Controls(canvas, transforms, fractal, painter) {
     (function(m) {
       that.canvas['on' + m] = function() { that[m].apply(that, arguments); }
     })(method);
-  }*/
+  }
+  */
+  
   // Temporary fix for google closure compiler:
   that.canvas.onmousedown = function() { that.mousedown.apply(that, arguments); }
   that.canvas.onmouseup = function() { that.mouseup.apply(that, arguments); }
@@ -32,13 +34,7 @@ function Controls(canvas, transforms, fractal, painter) {
   that.canvas.onmouseover = function() { that.mouseover.apply(that, arguments); }
   that.canvas.onmouseout = function() { that.mouseout.apply(that, arguments); }
   that.canvas.ondblclick = function() { that.dblclick.apply(that, arguments); }
-  
-  // Mouse wheel event is not consistent amongst browsers >:(
-  if ('onwheel' in that.canvas) m = 'onwheel';
-  else if ('onmousewheel' in that.canvas) m = 'onmousewheel';
-  else throw new Error("Mousewheel event not supported.");
-  
-  that.canvas[m] = function() { that['wheel'].apply(that, arguments); }
+  that.canvas.onmousewheel = that.canvas.onwheel = function() { that.wheel.apply(that, arguments); }
 }
 
 Controls.prototype = {
