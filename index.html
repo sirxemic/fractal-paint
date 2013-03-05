@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Fractal Paint</title>
+  <style>
+  * { margin: 0; padding: 0}
+  body { 
+    font-size: 12px; 
+    font-family: Helvetica Neue, Arial, sans-serif;
+    min-width: 640px;
+    min-height: 640px;
+  }
+  #wrapper { background: #ccc; }
+  #bg { background: #000; position: relative; top: 0; left: 0; }
+  #wrapper, canvas {
+    position: absolute; 
+    left: 0; 
+    top: 0; 
+    bottom: 0; 
+    right: 0;
+    cursor: default;
+  }
+
+  .splash:after {
+    display: block;
+    content: "";
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #000 url(title.png) 50% 50% no-repeat;
+    background-size: contain;
+    z-index: 1000;
+    position: absolute;
+    min-width: 640px;
+    min-height: 640px;
+  }
+
+  #info { 
+    position: absolute; 
+    left: 0; 
+    bottom: 0; 
+    background: rgba(255,255,255,0.8); 
+    padding: 10px 30px 10px 10px; 
+    width: 25%;
+  }
+  #info a { 
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block; 
+    padding: 0 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: #000;
+  }
+  </style>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12231632-3']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+<body class="splash">
+  <div id="wrapper">
+    <div id="bg"></div>
+    <canvas id="draw-target"></canvas>
+    <canvas id="fractal"></canvas>
+    <canvas id="controls"></canvas>
+    <div id="info">
+      <a href="#">&times;</a>
+      <p>Draw with left mouse button, erase with right mouse button.</p>
+      <p>Hold shift to modify the frames (also try dragging the corners) and to pan the scene. Use scroll wheel to zoom.</p>
+      <p>Double click to add/remove frames.</p>
+      <p>Drag and drop an image onto the canvas to use that.</p>
+    </div>
+  </div>
+  <script src="fractal.js"></script>
+</body>
+
+</html>
