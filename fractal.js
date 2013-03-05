@@ -691,5 +691,4 @@ function initTransforms(width, height, transforms) {
     reader.readAsDataURL(file);
 
     return false;
-  };
-})();
+  }
