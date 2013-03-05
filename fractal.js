@@ -665,10 +665,12 @@ function initTransforms(width, height, transforms) {
     document.className = 'hover';
     return false;
   };
+  
   document.ondragend = function() {
     document.className = '';
     return false;
   };
+  
   document.ondrop = function(e) {
     document.className = '';
     e.preventDefault();
@@ -677,7 +679,7 @@ function initTransforms(width, height, transforms) {
         reader = new FileReader;
     reader.onload = function (event) {
 
-      if (!event.target.result.substr(0, 11) == "data:image/") return;
+      if (event.target.result.substr(0, 11) != "data:image/") return;
         
       var img = new Image;
       img.onload = function() {
@@ -689,5 +691,4 @@ function initTransforms(width, height, transforms) {
     reader.readAsDataURL(file);
 
     return false;
-  };
-})();
+  }
