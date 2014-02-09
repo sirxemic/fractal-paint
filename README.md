@@ -3,6 +3,10 @@ Fractal Paint
 
 Simple tool to turn drawings or images into fractals.
 
+## Demo
+
+Click [here](http://sirxemic.github.io/fractal-paint) for a demo.
+
 #### Controls:
 - Draw with left mouse button, erase with right mouse button.
 - Hold shift to modify the frames (also try dragging the corners) and to pan the scene. Use scroll wheel to zoom.
