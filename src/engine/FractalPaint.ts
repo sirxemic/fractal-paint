@@ -2,6 +2,7 @@ import { context2d } from './canvas'
 import { Fractal } from './Fractal'
 import { type FrameHit, type Frames, createInitialFrames, createRandomFrame, hitTest } from './frames'
 import {
+  IDENTITY,
   type Affine,
   type Corner,
   type Point,
@@ -73,6 +74,12 @@ export class FractalPaint {
   private hovering = false
   private shiftHeld = false
   private stepsLeft = SETTLE_STEPS
+  private resetPending = false
+  /**
+   * Pans and zooms not yet applied to the drawing. Resampling the drawing on every pointer
+   * event is slow and blurs it, so that only happens when the drawing is about to change.
+   */
+  private viewTransform: Affine = IDENTITY
   private overlayDirty = true
   private animationFrame = 0
 
@@ -129,8 +136,7 @@ export class FractalPaint {
     if (this.selected === null || this.selected === 0) return
     this.frames.splice(this.selected, 1)
     this.select(null)
-    this.fractal.reset()
-    this.invalidate()
+    this.resetFractal()
   }
 
   /** Replaces all frames by a new random set. */
@@ -138,27 +144,30 @@ export class FractalPaint {
     const { width, height } = this.overlayCanvas
     this.frames.splice(0, this.frames.length, ...createInitialFrames(width, height))
     this.select(null)
-    this.fractal.reset()
-    this.invalidate()
+    this.resetFractal()
   }
 
   clearDrawing(): void {
     this.cancelGesture()
+    this.setViewTransform(IDENTITY)
     this.painter.clear()
-    this.fractal.reset()
-    this.invalidate()
+    this.resetFractal()
   }
 
   loadImage(img: HTMLImageElement | ImageBitmap): void {
     this.cancelGesture()
+    this.setViewTransform(IDENTITY)
     this.painter.loadImage(img)
-    this.fractal.reset()
-    this.invalidate()
+    this.resetFractal()
   }
 
   // --- Rendering ---------------------------------------------------------------------------
 
   private readonly tick = () => {
+    if (this.resetPending) {
+      this.fractal.reset()
+      this.resetPending = false
+    }
     if (this.stepsLeft > 0) {
       this.fractal.step()
       this.stepsLeft--
@@ -173,6 +182,12 @@ export class FractalPaint {
   private invalidate(): void {
     this.stepsLeft = SETTLE_STEPS
     this.overlayDirty = true
+  }
+
+  /** Starts the fractal over from the drawing, on the next animation frame. */
+  private resetFractal(): void {
+    this.resetPending = true
+    this.invalidate()
   }
 
   private drawOverlay(): void {
@@ -201,6 +216,7 @@ export class FractalPaint {
     const { width: oldWidth, height: oldHeight } = this.overlayCanvas
     if (width === oldWidth && height === oldHeight) return
 
+    this.commitViewTransform()
     // Keep the scene centered, as the drawing is.
     const shift = translation(Math.round((width - oldWidth) / 2), Math.round((height - oldHeight) / 2))
     this.frames.forEach((frame, i) => (this.frames[i] = compose(shift, frame)))
@@ -216,10 +232,22 @@ export class FractalPaint {
 
   /** Applies a transformation to the drawing and all frames, i.e. pans or zooms the scene. */
   private transformScene(t: Affine): void {
-    this.painter.transform(t)
+    this.setViewTransform(compose(t, this.viewTransform))
     this.fractal.transform(t)
     this.frames.forEach((frame, i) => (this.frames[i] = compose(t, frame)))
     this.invalidate()
+  }
+
+  private setViewTransform(t: Affine): void {
+    this.viewTransform = t
+    this.fractal.sourceTransform = t
+  }
+
+  /** Applies outstanding pans and zooms to the drawing itself. */
+  private commitViewTransform(): void {
+    if (this.viewTransform === IDENTITY) return
+    this.painter.transform(this.viewTransform)
+    this.setViewTransform(IDENTITY)
   }
 
   /** Removes the frame at a point, or adds a new frame there if there is none. */
@@ -232,8 +260,7 @@ export class FractalPaint {
       this.frames.push(createRandomFrame(this.frames[0], p))
       this.select(this.tool === 'frames' ? this.frames.length - 1 : null)
     }
-    this.fractal.reset()
-    this.invalidate()
+    this.resetFractal()
   }
 
   private select(index: number | null): void {
@@ -305,6 +332,7 @@ export class FractalPaint {
       this.overlayDirty = true
     } else {
       const erase = this.tool === 'erase' || e.button === 2 || e.button === 5
+      this.commitViewTransform()
       this.painter.begin(p, erase, e.timeStamp)
       this.gesture = { kind: 'paint' }
     }
@@ -336,8 +364,7 @@ export class FractalPaint {
             ? compose(translation(p.x - gesture.last.x, p.y - gesture.last.y), frame)
             : dragCorner(frame, gesture.corner, p)
         gesture.last = p
-        this.fractal.reset()
-        this.invalidate()
+        this.resetFractal()
         break
       }
       case 'pan':
