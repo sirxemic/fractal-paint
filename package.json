@@ -19,8 +19,10 @@
     "@vitejs/plugin-vue": "^6.0.10",
     "typescript": "^6.0.3",
     "vite": "^8.3.4",
+    "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.0.5",
-    "vue-tsc": "^3.3.13"
+    "vue-tsc": "^3.3.13",
+    "workbox-window": "^7.4.1"
   },
   "engines": {
     "node": ">=22"

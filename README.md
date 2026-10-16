@@ -24,6 +24,13 @@ Whatever is inside the yellow (reference) frame gets copied into every white fra
 
 Use the **Image** button, or drag and drop or paste an image onto the page to use that.
 
+## Install & offline use
+
+Fractal Paint is a Progressive Web App: install it from your browser (*Add to Home Screen* on
+iOS, *Install app* on Android and desktop Chrome/Edge) and it works without an internet
+connection. When a new version is available, the app asks before reloading so you don't lose
+your drawing.
+
 ## Development
 
 Requires Node.js 22 or newer.
@@ -35,7 +42,8 @@ npm test           # run unit tests
 npm run build      # type-check and build into dist/
 ```
 
-Built with [Vue](https://vuejs.org), TypeScript and [Vite](https://vite.dev). The rendering engine in
+Built with [Vue](https://vuejs.org), TypeScript, [Vite](https://vite.dev) and
+[vite-plugin-pwa](https://vite-pwa-org.netlify.app). The rendering engine in
 `src/engine` is framework independent; the Vue components only provide the toolbar and panels.
 
 Pushes to `master` are built and deployed to GitHub Pages by `.github/workflows/ci.yml`

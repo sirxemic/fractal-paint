@@ -1,6 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#000"/>
-  <rect x="9" y="5" width="14" height="14" fill="none" stroke="#ffd60a" stroke-width="2"/>
-  <rect x="5" y="19" width="8" height="8" fill="none" stroke="#fff" stroke-width="2" transform="rotate(-15 9 23)"/>
-  <rect x="19" y="19" width="8" height="8" fill="none" stroke="#fff" stroke-width="2" transform="rotate(20 23 23)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#000"/>
+  <g transform="translate(256 256) scale(1) translate(-256 -256)">
+  <rect x="172" y="92" width="168" height="168" fill="none" stroke="#ffd60a" stroke-width="20" stroke-linejoin="round" transform="rotate(0 256 176)"/>
+  <rect x="112" y="274" width="104" height="104" fill="none" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" transform="rotate(-22 164 326)"/>
+  <rect x="296" y="274" width="104" height="104" fill="none" stroke="#ffffff" stroke-width="16" stroke-linejoin="round" transform="rotate(22 348 326)"/>
+  <rect x="113.78909367138813" y="401.23990486336504" width="64.38095238095238" height="64.38095238095238" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="8" stroke-linejoin="round" transform="rotate(-44 145.97956986186432 433.43038105384124)"/>
+  <rect x="333.8299539476595" y="401.23990486336504" width="64.38095238095238" height="64.38095238095238" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="8" stroke-linejoin="round" transform="rotate(44 366.0204301381357 433.43038105384124)"/>
+  </g>
 </svg>

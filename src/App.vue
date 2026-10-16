@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 import HelpPanel from './components/HelpPanel.vue'
+import UpdateToast from './components/UpdateToast.vue'
 import Toolbar from './components/Toolbar.vue'
 import { FractalPaint, type Tool } from './engine/FractalPaint'
 import titleUrl from './assets/title.png'
@@ -117,6 +118,8 @@ function writeFlag(key: string) {
       @load-file="loadFile"
       @toggle-help="helpOpen = !helpOpen"
     />
+
+    <UpdateToast />
 
     <Transition name="fade">
       <div v-if="splash" class="splash" :style="{ backgroundImage: `url(${titleUrl})` }" @pointerdown="splash = false" />
